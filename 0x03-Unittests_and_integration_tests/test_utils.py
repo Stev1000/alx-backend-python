@@ -10,7 +10,7 @@ from unittest.mock import patch, Mock
 # Add current folder to path for importing utils.py
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from utils import access_nested_map, get_json, memoize  # Moved to top to fix E402
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -48,7 +48,10 @@ class TestGetJson(unittest.TestCase):
         mock_response = Mock()
         mock_response.json.return_value = test_payload
 
-        with patch("utils.requests.get", return_value=mock_response) as mock_get:
+        with patch(
+            "utils.requests.get",
+            return_value=mock_response
+        ) as mock_get:
             result = get_json(test_url)
             mock_get.assert_called_once_with(test_url)
             self.assertEqual(result, test_payload)
@@ -68,7 +71,11 @@ class TestMemoize(unittest.TestCase):
             def a_property(self):
                 return self.a_method()
 
-        with patch.object(TestClass, "a_method", return_value=42) as mock_method:
+        with patch.object(
+            TestClass,
+            "a_method",
+            return_value=42
+        ) as mock_method:
             test_obj = TestClass()
             result1 = test_obj.a_property
             result2 = test_obj.a_property
