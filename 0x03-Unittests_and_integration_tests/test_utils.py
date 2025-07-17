@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Unit tests for access_nested_map in utils.py"""
+"""Unit tests for utils.py"""
 
 import unittest
 from parameterized import parameterized
-
-# For importing utils.py in same directory
+from unittest.mock import patch, Mock
 import sys
 import os
+
+# Add current folder to path for importing utils.py
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from utils import access_nested_map
+from utils import access_nested_map, get_json
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -33,3 +34,25 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
         self.assertEqual(str(context.exception), f"'{expected_key}'")
+
+
+class TestGetJson(unittest.TestCase):
+    """Unit tests for get_json with mocked HTTP requests"""
+
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+    ])
+    def test_get_json(self, test_url, test_payload):
+        """Test that get_json returns expected payload without real HTTP call"""
+        mock_response = Mock()
+        mock_response.json.return_value = test_payload
+
+        with patch("utils.requests.get", return_value=mock_response) as mock_get:
+            result = get_json(test_url)
+            mock_get.assert_called_once_with(test_url)
+            self.assertEqual(result, test_payload)
+
+
+if __name__ == "__main__":
+    unittest.main()
