@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """Unit tests for utils.py"""
 
+import os
+import sys
 import unittest
 from parameterized import parameterized
 from unittest.mock import patch, Mock
-import sys
-import os
 
 # Add current folder to path for importing utils.py
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from utils import access_nested_map, get_json, memoize
+from utils import access_nested_map, get_json, memoize  # Moved to top to fix E402
 
 
 class TestAccessNestedMap(unittest.TestCase):
