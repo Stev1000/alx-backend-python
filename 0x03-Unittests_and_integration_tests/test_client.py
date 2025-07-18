@@ -82,17 +82,16 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-@parameterized_class([
-    {
-        "org_payload": org_payload,
-        "repos_payload": repos_payload,
-        "expected_repos": expected_repos,
-        "apache2_repos": apache2_repos
-    }
+# ✅ STRICTLY FORMAT parameterized_class as a single dict in a list
+@parameterized_class(('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'), [
+    (org_payload, repos_payload, expected_repos, apache2_repos)
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration tests for GithubOrgClient.public_repos"""
+
     @classmethod
     def setUpClass(cls):
+        """Patch requests.get with side_effect based on URL"""
         cls.get_patcher = patch("requests.get")
         mock_get = cls.get_patcher.start()
 
@@ -111,13 +110,16 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """Stop patcher after all integration tests"""
         cls.get_patcher.stop()
 
     def test_public_repos(self):
+        """Integration test: public_repos returns all repo names"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
+        """Integration test: public_repos filters by license"""
         client = GithubOrgClient("google")
         self.assertEqual(
             client.public_repos(license="apache-2.0"),
