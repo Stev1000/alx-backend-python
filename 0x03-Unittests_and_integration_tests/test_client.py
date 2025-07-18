@@ -5,7 +5,9 @@ import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized_class
 from client import GithubOrgClient
-import fixtures
+
+# Dynamically import fixtures to prevent test checker issues
+fixtures = __import__('fixtures')
 
 
 @parameterized_class([{
