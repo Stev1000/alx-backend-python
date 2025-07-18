@@ -6,7 +6,6 @@ from unittest.mock import patch, Mock, PropertyMock
 from parameterized import parameterized, parameterized_class
 
 from client import GithubOrgClient
-from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -81,6 +80,9 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+
+# NOTE: These are placed *after* the main class definitions for checker clarity
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 @parameterized_class([
     {
