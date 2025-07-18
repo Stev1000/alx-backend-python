@@ -1,37 +1,49 @@
 #!/usr/bin/env python3
-"""GithubOrgClient module"""
+"""Client module for interacting with GitHub API."""
 
-from utils import get_json
+import requests
+from functools import lru_cache
+from typing import List, Dict
+
+
+def get_json(url: str) -> Dict:
+    """GET JSON content from a URL."""
+    response = requests.get(url)
+    return response.json()
 
 
 class GithubOrgClient:
-    """Client for GitHub organizations"""
+    """GitHub Organization Client"""
 
-    def __init__(self, org_name):
+    ORG_URL = "https://api.github.com/orgs/{}"
+
+    def __init__(self, org_name: str) -> None:
+        """Initialize with org name"""
         self.org_name = org_name
 
     @property
-    def org(self):
-        """Fetch organization data"""
-        url = f"https://api.github.com/orgs/{self.org_name}"
+    def org(self) -> Dict:
+        """Get organization info"""
+        url = self.ORG_URL.format(self.org_name)
         return get_json(url)
 
     @property
-    def _public_repos_url(self):
-        """Get the repos_url from org"""
+    def _public_repos_url(self) -> str:
+        """Return public repositories URL from org payload"""
         return self.org.get("repos_url")
 
-    def public_repos(self, license=None):
-        """Fetch and return public repository names, optionally filtered by license"""
+    def public_repos(self, license: str = None) -> List[str]:
+        """Return list of public repo names. Filter by license if provided."""
         repos = get_json(self._public_repos_url)
-        repo_names = [
-            repo["name"]
-            for repo in repos
-            if license is None or self.has_license(repo, license)
-        ]
+        repo_names = []
+
+        for repo in repos:
+            if license is None or self.has_license(repo, license):
+                repo_names.append(repo["name"])
+
         return repo_names
 
     @staticmethod
-    def has_license(repo, license_key):
-        """Check if repo has the given license"""
+    def has_license(repo: Dict, license_key: str) -> bool:
+        """Check if repository has the given license key"""
         return repo.get("license", {}).get("key") == license_key
