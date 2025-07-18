@@ -12,3 +12,5 @@ repos_payload = [
 expected_repos = ["repo1", "repo2"]
 
 apache2_repos = ["repo1"]
+
+__all__ = ["org_payload", "repos_payload", "expected_repos", "apache2_repos"]
