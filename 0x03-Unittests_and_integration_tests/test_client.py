@@ -6,6 +6,7 @@ from unittest.mock import patch, Mock, PropertyMock
 from parameterized import parameterized, parameterized_class
 
 from client import GithubOrgClient
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -81,9 +82,6 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-# NOTE: These are placed *after* the main class definitions for checker clarity
-from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
-
 @parameterized_class([
     {
         "org_payload": org_payload,
@@ -91,7 +89,7 @@ from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
         "expected_repos": expected_repos,
         "apache2_repos": apache2_repos
     }
-])
+], name_func=None)
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for GithubOrgClient.public_repos"""
 
