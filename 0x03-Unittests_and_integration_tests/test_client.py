@@ -3,35 +3,33 @@
 
 import unittest
 from unittest.mock import patch, Mock
-from parameterized import parameterized_class
 from client import GithubOrgClient
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
-@parameterized_class([{
-    "org_payload": org_payload,
-    "repos_payload": repos_payload,
-    "expected_repos": expected_repos,
-    "apache2_repos": apache2_repos
-}])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """Test class with @parameterized_class for ALX checker"""
+    """Integration tests for GithubOrgClient.public_repos using fixtures"""
 
     @classmethod
     def setUpClass(cls):
-        """Start patcher and mock requests.get"""
-        cls.get_patcher = patch('requests.get')
+        """Start patcher and load fixtures manually"""
+        cls.org_payload = org_payload
+        cls.repos_payload = repos_payload
+        cls.expected_repos = expected_repos
+        cls.apache2_repos = apache2_repos
+
+        cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
         def side_effect(url):
             if url == "https://api.github.com/orgs/google":
-                mock_resp = Mock()
-                mock_resp.json.return_value = cls.org_payload
-                return mock_resp
+                mock_response = Mock()
+                mock_response.json.return_value = cls.org_payload
+                return mock_response
             elif url == cls.org_payload["repos_url"]:
-                mock_resp = Mock()
-                mock_resp.json.return_value = cls.repos_payload
-                return mock_resp
+                mock_response = Mock()
+                mock_response.json.return_value = cls.repos_payload
+                return mock_response
             raise ValueError(f"Unhandled URL: {url}")
 
         cls.mock_get.side_effect = side_effect
@@ -42,7 +40,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test public_repos returns expected list"""
+        """Test public_repos returns all repos"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
@@ -53,14 +51,3 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             client.public_repos(license="apache-2.0"),
             self.apache2_repos
         )
-
-    def test_parameterized_fixture_loaded(self):
-        """Ensure parameterized_class loaded attributes correctly (for checker)"""
-        self.assertTrue(hasattr(self, "org_payload"))
-        self.assertTrue(hasattr(self, "repos_payload"))
-        self.assertTrue(hasattr(self, "expected_repos"))
-        self.assertTrue(hasattr(self, "apache2_repos"))
-
-
-if __name__ == "__main__":
-    unittest.main()
