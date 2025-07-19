@@ -3,24 +3,25 @@
 
 import unittest
 from unittest.mock import patch, Mock
+from parameterized import parameterized_class
 from client import GithubOrgClient
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
+@parameterized_class([{
+    "org_payload": org_payload,
+    "repos_payload": repos_payload,
+    "expected_repos": expected_repos,
+    "apache2_repos": apache2_repos
+}])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """Checker-compatible integration tests without parameterized_class"""
+    """Integration tests for GithubOrgClient using fixtures"""
 
     @classmethod
     def setUpClass(cls):
-        """Start patcher and manually assign fixture data"""
+        """Start patcher and set up mock responses"""
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
-
-        # Hardcoded fixture data (simulate parameterized_class)
-        cls.org_payload = org_payload
-        cls.repos_payload = repos_payload
-        cls.expected_repos = expected_repos
-        cls.apache2_repos = apache2_repos
 
         def side_effect(url):
             if url == "https://api.github.com/orgs/google":
@@ -41,17 +42,21 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test that all public repos are returned"""
+        """Test all public repos are returned"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
-        """Test that only repos with the apache-2.0 license are returned"""
+        """Test repos filtered by license"""
         client = GithubOrgClient("google")
-        self.assertEqual(
-            client.public_repos(license="apache-2.0"),
-            self.apache2_repos
-        )
+        self.assertEqual(client.public_repos("apache-2.0"), self.apache2_repos)
+
+    def test_param_class_loaded(self):
+        """Ensure parameterized class has attributes"""
+        self.assertTrue(hasattr(self, "org_payload"))
+        self.assertTrue(hasattr(self, "repos_payload"))
+        self.assertTrue(hasattr(self, "expected_repos"))
+        self.assertTrue(hasattr(self, "apache2_repos"))
 
 
 if __name__ == "__main__":
