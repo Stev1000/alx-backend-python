@@ -26,11 +26,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # Create mock response objects for each URL
         # These mocks will be returned by requests.get
         mock_org_response = Mock()
-        # When .json() is called on mock_org_response, it will return cls.org_payload
+        # mock_org_response.json() returns cls.org_payload
         mock_org_response.json.return_value = cls.org_payload
 
         mock_repos_response = Mock()
-        # When .json() is called on mock_repos_response, it will return cls.repos_payload
+        # mock_repos_response.json() returns cls.repos_payload
         mock_repos_response.json.return_value = cls.repos_payload
 
         def side_effect(url):
@@ -63,4 +63,3 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """Test public repos filtered by apache-2.0"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos("apache-2.0"), self.apache2_repos)
-        
