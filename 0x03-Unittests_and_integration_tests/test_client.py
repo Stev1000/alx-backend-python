@@ -5,9 +5,6 @@ import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized_class
 from client import GithubOrgClient
-
-# Import fixtures dynamically to avoid breaking test environments
-#fixtures = __import__('fixtures')
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
@@ -17,7 +14,6 @@ from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
     "expected_repos": expected_repos,
     "apache2_repos": apache2_repos
 }])
-
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration test case for GithubOrgClient.public_repos"""
 
@@ -57,6 +53,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             client.public_repos(license="apache-2.0"),
             self.apache2_repos
         )
+
+    def test_dummy_param(self):
+        """Dummy test to verify parameterized_class applied correctly"""
+        self.assertTrue(hasattr(self, "org_payload"))
+        self.assertTrue(hasattr(self, "repos_payload"))
+        self.assertTrue(hasattr(self, "expected_repos"))
+        self.assertTrue(hasattr(self, "apache2_repos"))
 
 
 if __name__ == "__main__":
