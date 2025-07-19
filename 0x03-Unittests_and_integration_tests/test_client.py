@@ -8,18 +8,18 @@ from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """Integration tests for GithubOrgClient.public_repos using fixtures"""
+    """Integration tests for GithubOrgClient.public_repos"""
 
     @classmethod
     def setUpClass(cls):
-        """Start patcher and load fixtures manually"""
+        """Set up patcher and mock requests.get with fixture responses"""
+        cls.get_patcher = patch("requests.get")
+        cls.mock_get = cls.get_patcher.start()
+
         cls.org_payload = org_payload
         cls.repos_payload = repos_payload
         cls.expected_repos = expected_repos
         cls.apache2_repos = apache2_repos
-
-        cls.get_patcher = patch("requests.get")
-        cls.mock_get = cls.get_patcher.start()
 
         def side_effect(url):
             if url == "https://api.github.com/orgs/google":
@@ -36,18 +36,16 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Stop patcher"""
+        """Stop patcher after all tests"""
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test public_repos returns all repos"""
+        """Test all public repos returned from GithubOrgClient"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
-        """Test public_repos filters by apache-2.0 license"""
+        """Test public repos filtered by apache-2.0 license"""
         client = GithubOrgClient("google")
-        self.assertEqual(
-            client.public_repos(license="apache-2.0"),
-            self.apache2_repos
-        )
+        self.assertEqual(client.public_repos(license="apache-2.0"), self.apache2_repos)
+

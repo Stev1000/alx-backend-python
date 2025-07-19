@@ -1,4 +1,5 @@
-# fixtures.py
+#!/usr/bin/env python3
+"""Fixtures for integration tests"""
 
 org_payload = {
     "repos_url": "https://api.github.com/orgs/google/repos"
