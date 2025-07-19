@@ -23,17 +23,30 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
+        # Create mock response objects for each URL
+        # These mocks will be returned by requests.get
+        mock_org_response = Mock()
+        # When .json() is called on mock_org_response, it will return cls.org_payload
+        mock_org_response.json.return_value = cls.org_payload
+
+        mock_repos_response = Mock()
+        # When .json() is called on mock_repos_response, it will return cls.repos_payload
+        mock_repos_response.json.return_value = cls.repos_payload
+
         def side_effect(url):
+            """
+            Custom side effect function for requests.get.
+            Returns the appropriate mock response based on the URL.
+            """
             if url == "https://api.github.com/orgs/google":
-                mock_resp = Mock()
-                mock_resp.json.return_value = cls.org_payload
-                return mock_resp
+                return mock_org_response
+            # This URL comes from org_payload["repos_url"]
             if url == cls.org_payload["repos_url"]:
-                mock_resp = Mock()
-                mock_resp.json.return_value = cls.repos_payload
-                return mock_resp
+                return mock_repos_response
+            # If an unexpected URL is requested, raise an error for debugging
             raise ValueError(f"Unhandled URL: {url}")
 
+        # Assign the custom side_effect function to the mock requests.get
         cls.mock_get.side_effect = side_effect
 
     @classmethod
@@ -50,3 +63,4 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """Test public repos filtered by apache-2.0"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos("apache-2.0"), self.apache2_repos)
+        
