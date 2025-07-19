@@ -6,7 +6,7 @@ from unittest.mock import patch, Mock
 from parameterized import parameterized_class
 from client import GithubOrgClient
 
-# Dynamically import fixtures to prevent test checker issues
+# Import fixtures dynamically to avoid breaking test environments
 fixtures = __import__('fixtures')
 
 
@@ -21,35 +21,35 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Set up patch for requests.get"""
+        """Start patcher and mock responses based on URL"""
         cls.get_patcher = patch("requests.get")
-        mock_get = cls.get_patcher.start()
+        cls.mock_get = cls.get_patcher.start()
 
         def side_effect(url):
             if url == "https://api.github.com/orgs/google":
-                mock_resp = Mock()
-                mock_resp.json.return_value = cls.org_payload
-                return mock_resp
+                mock_response = Mock()
+                mock_response.json.return_value = cls.org_payload
+                return mock_response
             elif url == cls.org_payload["repos_url"]:
-                mock_resp = Mock()
-                mock_resp.json.return_value = cls.repos_payload
-                return mock_resp
+                mock_response = Mock()
+                mock_response.json.return_value = cls.repos_payload
+                return mock_response
             raise ValueError(f"Unhandled URL: {url}")
 
-        mock_get.side_effect = side_effect
+        cls.mock_get.side_effect = side_effect
 
     @classmethod
     def tearDownClass(cls):
-        """Tear down patch"""
+        """Stop patcher"""
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test all public repos are returned"""
+        """Test that all public repos are returned"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
-        """Test only repos with apache-2.0 license are returned"""
+        """Test that only repos with the apache-2.0 license are returned"""
         client = GithubOrgClient("google")
         self.assertEqual(
             client.public_repos(license="apache-2.0"),
