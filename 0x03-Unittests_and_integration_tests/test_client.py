@@ -12,7 +12,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Set up patcher and mock requests.get with fixture responses"""
+        """Set up mock for requests.get"""
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
@@ -40,12 +40,12 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test all public repos returned from GithubOrgClient"""
+        """Test public repos from client"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
-        """Test public repos filtered by apache-2.0 license"""
+        """Test public repos filtered by apache-2.0"""
         client = GithubOrgClient("google")
         result = client.public_repos(license="apache-2.0")
         self.assertEqual(result, self.apache2_repos)
