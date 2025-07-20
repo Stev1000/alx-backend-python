@@ -1,51 +1,31 @@
 import uuid
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import gettext_lazy as _
+from django.db import models
 
-
+# Custom User model
 class User(AbstractUser):
-    """
-    Custom User model extending AbstractUser.
-    """
-    class Role(models.TextChoices):
-        GUEST = 'guest', _('Guest')
-        HOST = 'host', _('Host')
-        ADMIN = 'admin', _('Admin')
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_index=True)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, null=True, blank=True)
-    role = models.CharField(max_length=10, choices=Role.choices, default=Role.GUEST)
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    role = models.CharField(max_length=10, choices=[
+        ('guest', 'Guest'),
+        ('host', 'Host'),
+        ('admin', 'Admin')
+    ])
     created_at = models.DateTimeField(auto_now_add=True)
 
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'phone_number', 'role']
+    USERNAME_FIELD = 'username'  # default
 
-    def __str__(self):
-        return self.username
-
-
+# Conversation model
 class Conversation(models.Model):
-    """
-    Conversation model to represent a chat between users.
-    """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_index=True)
+    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     participants = models.ManyToManyField(User, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Conversation {self.id}"
-
-
+# Message model
 class Message(models.Model):
-    """
-    Message model sent by a user in a conversation.
-    """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_index=True)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages_sent')
+    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
     message_body = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Message from {self.sender.username} at {self.sent_at}"
