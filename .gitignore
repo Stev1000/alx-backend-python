@@ -1,0 +1,16 @@
+# .gitignore
+
+# Ignore virtual environments
+venv/
+ENV/
+env/
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore SQLite DB
+*.sqlite3
+
+# Ignore system files
+.DS_Store
