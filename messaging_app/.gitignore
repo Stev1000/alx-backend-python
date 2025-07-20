@@ -1,9 +1,0 @@
-messaging_app/venv/
-__pycache__/
-*.pyc
-*.pyo
-*.sqlite3
-*.log
-.DS_Store
-.env
-*.env
