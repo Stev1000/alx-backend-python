@@ -52,6 +52,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',   
         'rest_framework.authentication.SessionAuthentication', 
     ],
+    'DEFAULT_PAGINATION_CLASS': 'chats.pagination.MessagePagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter'
+    ]
 }
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
