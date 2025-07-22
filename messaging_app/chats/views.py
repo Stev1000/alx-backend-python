@@ -4,7 +4,6 @@ from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from .permissions import IsParticipantOfConversation
 
-
 class ConversationViewSet(viewsets.ModelViewSet):
     serializer_class = ConversationSerializer
     permission_classes = [IsAuthenticated, IsParticipantOfConversation]
@@ -12,7 +11,6 @@ class ConversationViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at']
 
     def get_queryset(self):
-        # Return conversations where the request user is a participant
         return Conversation.objects.filter(participants__user_id=self.request.user.user_id)
 
     def perform_create(self, serializer):
@@ -27,7 +25,6 @@ class MessageViewSet(viewsets.ModelViewSet):
     ordering_fields = ['sent_at']
 
     def get_queryset(self):
-        # Return messages from conversations where the user is a participant
         return Message.objects.filter(conversation__participants__user_id=self.request.user.user_id)
 
     def perform_create(self, serializer):

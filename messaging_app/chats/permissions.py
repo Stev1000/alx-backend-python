@@ -1,20 +1,14 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from .models import Conversation
-
 
 class IsParticipantOfConversation(BasePermission):
     """
-    Allows access only to participants of the conversation.
+    Custom permission to allow only participants of a conversation to access it.
     """
 
     def has_object_permission(self, request, view, obj):
-        # Case: checking if user is part of the conversation for Message or Conversation object
-        if hasattr(obj, 'participants'):
-            return request.user in obj.participants.all()
-        elif hasattr(obj, 'conversation'):
-            return request.user in obj.conversation.participants.all()
-        return False
-
-    def has_permission(self, request, view):
-        # Global permission to ensure only authenticated users access the views
-        return request.user and request.user.is_authenticated
+        user = request.user
+        # For Message object, check via obj.conversation
+        if hasattr(obj, 'conversation'):
+            return user in obj.conversation.participants.all()
+        # For Conversation object
+        return user in obj.participants.all()
