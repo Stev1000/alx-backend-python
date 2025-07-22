@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'chats',
+    'django_filters'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
