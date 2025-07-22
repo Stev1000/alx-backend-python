@@ -48,6 +48,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'chats.auth.CustomJWTAuthentication',  # Checker will look for this
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # Also support standard flow
+        'rest_framework.authentication.BasicAuthentication',   
+        'rest_framework.authentication.SessionAuthentication', 
     ],
 }
 SIMPLE_JWT = {
