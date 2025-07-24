@@ -16,13 +16,15 @@ class ConversationSerializer(serializers.ModelSerializer):
     slug_field='username',  # 👈 Accept username instead of UUID
     queryset=User.objects.all()
 )
-    #messages = MessageSerializer(many=True, read_only=True, source='messages')
-    messages = MessageSerializer(many=True, read_only=True)
-
+    messages = serializers.SerializerMethodField()
 
     class Meta:
         model = Conversation
         fields = ['conversation_id', 'participants', 'messages', 'created_at']
+
+    def get_messages(self, obj):
+        messages = obj.messages.all()  # uses related_name='messages' from Message model
+        return MessageSerializer(messages, many=True).data
 
 
 class UserSerializer(serializers.ModelSerializer):
