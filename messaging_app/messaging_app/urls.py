@@ -7,9 +7,10 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-     path('', lambda request: HttpResponse("🎉 Welcome to the Messaging API")),
+    path('', lambda request: HttpResponse("🎉 Welcome to the Messaging API")),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Login
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Refresh
     path('api/', include('chats.urls')),  # app-level API
+    path('api-auth/', include('rest_framework.urls')),
 ]
