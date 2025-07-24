@@ -1,0 +1,15 @@
+2025-07-24 14:31:23.846040 - User: stevo - Path: /api/conversations/
+2025-07-24 14:32:51.500851 - User: stevo - Path: /api/conversations/
+2025-07-24 14:32:57.312567 - User: stevo - Path: /api-auth/logout/
+2025-07-24 14:32:57.336689 - User: Anonymous - Path: /api/conversations/
+Unauthorized: /api/conversations/
+2025-07-24 14:33:04.181877 - User: Anonymous - Path: /api/conversations/
+Unauthorized: /api/conversations/
+2025-07-24 14:33:08.985318 - User: Anonymous - Path: /api-auth/login/
+2025-07-24 14:33:17.703897 - User: Anonymous - Path: /api-auth/login/
+2025-07-24 14:33:17.815095 - User: stevo - Path: /api/conversations/
+2025-07-24 14:33:24.851353 - User: stevo - Path: /api/conversations/
+2025-07-24 14:33:38.678325 - User: stevo - Path: /api/conversations/
+2025-07-24 14:35:00.115147 - User: stevo - Path: /api-auth/logout/
+2025-07-24 14:35:00.133145 - User: Anonymous - Path: /api/conversations/
+Unauthorized: /api/conversations/
