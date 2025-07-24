@@ -36,9 +36,9 @@ class MessageViewSet(viewsets.ModelViewSet):
         return Message.objects.filter(conversation__participants__user_id=self.request.user.user_id)
 
     def perform_create(self, serializer):
-        conversation_id = self.request.data.get("conversation")
+        conversation_id = self.kwargs.get("conversation_pk")
         try:
-            conversation = Conversation.objects.get(id=conversation_id)
+            conversation = Conversation.objects.get(conversation_id=conversation_id)
         except Conversation.DoesNotExist:
             raise PermissionDenied("Conversation not found.")
 

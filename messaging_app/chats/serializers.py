@@ -11,11 +11,14 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class ConversationSerializer(serializers.ModelSerializer):
-    participants = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=User.objects.all()
-    )
-    messages = MessageSerializer(many=True, read_only=True, source='messages')
+    participants = serializers.SlugRelatedField(
+    many=True,
+    slug_field='username',  # 👈 Accept username instead of UUID
+    queryset=User.objects.all()
+)
+    #messages = MessageSerializer(many=True, read_only=True, source='messages')
+    messages = MessageSerializer(many=True, read_only=True)
+
 
     class Meta:
         model = Conversation
