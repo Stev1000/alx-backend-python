@@ -1,6 +1,10 @@
 from django.urls import path, include
 from rest_framework_nested.routers import DefaultRouter, NestedDefaultRouter
 from .views import ConversationViewSet, MessageViewSet
+from rest_framework import routers
+
+
+dummy_router = routers.DefaultRouter()
 
 # Create the root router
 router = DefaultRouter()
