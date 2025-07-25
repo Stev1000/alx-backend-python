@@ -13,3 +13,191 @@ Unauthorized: /api/conversations/
 2025-07-24 14:35:00.115147 - User: stevo - Path: /api-auth/logout/
 2025-07-24 14:35:00.133145 - User: Anonymous - Path: /api/conversations/
 Unauthorized: /api/conversations/
+2025-07-25 08:19:12.201423 - User: Anonymous - Path: /api/token/
+Bad Request: /api/token/
+2025-07-25 08:19:27.373277 - User: Anonymous - Path: /api/token/
+2025-07-25 08:23:23.097984 - User: Anonymous - Path: /api/messages/
+Not Found: /api/messages/
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\serializers.py changed, reloading.
+Forbidden: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+2025-07-25 09:41:44.607316 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Unauthorized: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 09:43:27.614537 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Unauthorized: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 09:43:33.643137 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Unauthorized: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 09:46:17.957561 - User: Anonymous - Path: /api/token/
+Unauthorized: /api/token/
+2025-07-25 09:46:47.422246 - User: Anonymous - Path: /api/token/
+Unauthorized: /api/token/
+2025-07-25 09:47:13.051025 - User: Anonymous - Path: /api/token/
+2025-07-25 09:48:25.067526 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Bad Request: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 09:54:44.963801 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Bad Request: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 09:54:58.130048 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Bad Request: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 09:55:43.344398 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Bad Request: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\serializers.py changed, reloading.
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\serializers.py changed, reloading.
+2025-07-25 10:00:03.218028 - User: Anonymous - Path: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+Forbidden: /api/conversations/15f10f85-d09d-4d9d-bf68-e9ab079f5eaf/messages/
+2025-07-25 10:10:14.093210 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Internal Server Error: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Traceback (most recent call last):
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\sqlite3\base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.IntegrityError: NOT NULL constraint failed: chats_message.conversation_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\views.py", line 49, in perform_create
+    serializer.save(sender=self.request.user)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\query.py", line 453, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 740, in save
+    force_update=force_update, update_fields=update_fields)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 778, in save_base
+    force_update, using, update_fields,
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 881, in _save_table
+    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 921, in _do_insert
+    using=using, raw=raw,
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\query.py", line 1270, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1416, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\sqlite3\base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.IntegrityError: NOT NULL constraint failed: chats_message.conversation_id
+2025-07-25 10:14:59.669613 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Internal Server Error: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Traceback (most recent call last):
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\sqlite3\base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.IntegrityError: NOT NULL constraint failed: chats_message.conversation_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\views.py", line 49, in perform_create
+    serializer.save(sender=self.request.user)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\rest_framework\serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\query.py", line 453, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 740, in save
+    force_update=force_update, update_fields=update_fields)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 778, in save_base
+    force_update, using, update_fields,
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 881, in _save_table
+    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\base.py", line 921, in _do_insert
+    using=using, raw=raw,
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\query.py", line 1270, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1416, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\nsanz\backend_pro\alx-backend-python\messaging_app\venv\lib\site-packages\django\db\backends\sqlite3\base.py", line 423, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.IntegrityError: NOT NULL constraint failed: chats_message.conversation_id
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\views.py changed, reloading.
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\views.py changed, reloading.
+2025-07-25 11:20:42.253951 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Unauthorized: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+2025-07-25 11:22:07.751670 - User: Anonymous - Path: /api/token/
+2025-07-25 11:23:46.943547 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+C:\Users\nsanz\backend_pro\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+2025-07-25 11:33:13.852503 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+2025-07-25 11:35:11.700438 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+2025-07-25 11:35:48.259135 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Bad Request: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+2025-07-25 11:36:13.377517 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Bad Request: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+2025-07-25 11:37:48.078413 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Bad Request: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+2025-07-25 11:37:51.138668 - User: Anonymous - Path: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
+Bad Request: /api/conversations/b726a50b-b947-4699-a3ea-9c98538e469a/messages/
