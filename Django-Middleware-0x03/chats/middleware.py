@@ -73,3 +73,29 @@ class OffensiveLanguageMiddleware:
         if x_forwarded_for:
             return x_forwarded_for.split(',')[0]
         return request.META.get('REMOTE_ADDR')
+
+class RolepermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Define protected paths (you can customize this)
+        protected_paths = [
+            '/api/conversations/',   # protect access to conversations
+            '/api/messages/',        # protect sending messages (optional)
+        ]
+
+        # Only apply check for authenticated users on protected paths
+        if request.path.startswith(tuple(protected_paths)):
+            user = request.user
+            if user.is_authenticated:
+                role = getattr(user, 'role', None)
+                if role not in ['admin', 'moderator']:
+                    return JsonResponse(
+                        {"error": "⛔ Permission denied. Admins or moderators only."},
+                        status=403
+                    )
+            else:
+                return JsonResponse({"error": "Authentication required."}, status=401)
+
+        return self.get_response(request)
