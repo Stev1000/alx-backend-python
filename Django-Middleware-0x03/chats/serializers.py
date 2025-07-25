@@ -7,7 +7,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['message_id', 'conversation', 'sender', 'message_body', 'sent_at']
-        read_only_fields = ['sender', 'sent_at']  # Sender set in perform_create
+        read_only_fields = ['sender', 'sent_at', 'conversation']  # Sender set in perform_create
 
 
 class ConversationSerializer(serializers.ModelSerializer):
@@ -17,7 +17,6 @@ class ConversationSerializer(serializers.ModelSerializer):
     queryset=User.objects.all()
 )
     messages = serializers.SerializerMethodField()
-
     class Meta:
         model = Conversation
         fields = ['conversation_id', 'participants', 'messages', 'created_at']
