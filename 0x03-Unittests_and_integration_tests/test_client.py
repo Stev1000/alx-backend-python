@@ -8,7 +8,7 @@ from client import GithubOrgClient
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
-# ---------------- Task 4: Unit Tests ---------------- #
+# ---------------- Task 4, 5, 6: Unit Tests ---------------- #
 
 class TestGithubOrgClient(unittest.TestCase):
     """Unit tests for GithubOrgClient"""
@@ -39,6 +39,23 @@ class TestGithubOrgClient(unittest.TestCase):
 
         self.assertEqual(result, "https://api.github.com/orgs/test_org/repos")
 
+    @patch("client.get_json")
+    def test_public_repos(self, mock_get_json):
+        """Test public_repos returns expected repo names and mocks properly"""
+        mock_get_json.return_value = [
+            {"name": "repo1"},
+            {"name": "repo2"}
+        ]
+
+        with patch("client.GithubOrgClient._public_repos_url", new_callable=PropertyMock) as mock_url:
+            mock_url.return_value = "http://fake.url"
+            client = GithubOrgClient("test_org")
+            result = client.public_repos()
+
+            self.assertEqual(result, ["repo1", "repo2"])
+            mock_url.assert_called_once()
+            mock_get_json.assert_called_once_with("http://fake.url")
+
 
 # ---------------- Task 9: Integration Tests ---------------- #
 
@@ -53,7 +70,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Set up mock for requests.get"""
+        """Patch requests.get and configure side effects"""
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
