@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Tests for GithubOrgClient"""
 
+import sys
+import os
+sys.path.append(os.path.dirname(__file__))
+
 import unittest
 from unittest.mock import patch, Mock, PropertyMock
 from parameterized import parameterized, parameterized_class
@@ -47,19 +51,23 @@ class TestGithubOrgClient(unittest.TestCase):
         "client.GithubOrgClient._public_repos_url",
         new_callable=PropertyMock
     )
-    def test_public_repos(self, mock_url, mock_get):
+    def test_public_repos(self, mock_url, mock_get_json):
         """Test public_repos"""
-        mock_get.return_value = [
+        mock_url.return_value = "https://api.github.com/orgs/test_org/repos"
+        mock_get_json.return_value = [
             {"name": "repo1", "license": {"key": "apache-2.0"}},
             {"name": "repo2", "license": {"key": "bsd-3-clause"}}
         ]
-        mock_url.return_value = "http://fake.url"
+
         client = GithubOrgClient("test_org")
         result = client.public_repos()
 
-        self.assertEqual(result, ["repo1", "repo2"])
+        expected = ["repo1", "repo2"]
+        self.assertEqual(result, expected)
         mock_url.assert_called_once()
-        mock_get.assert_called_once_with("http://fake.url")
+        mock_get_json.assert_called_once_with(
+            "https://api.github.com/orgs/test_org/repos"
+        )
 
 
 @parameterized_class([{
