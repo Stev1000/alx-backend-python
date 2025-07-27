@@ -5,7 +5,12 @@ import unittest
 from unittest.mock import patch, Mock, PropertyMock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
-import fixtures  # ✅ fixed import
+from fixtures import (
+    org_payload,
+    repos_payload,
+    expected_repos,
+    apache2_repos
+)
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -38,7 +43,10 @@ class TestGithubOrgClient(unittest.TestCase):
         )
 
     @patch("client.get_json")
-    @patch("client.GithubOrgClient._public_repos_url", new_callable=PropertyMock)
+    @patch(
+        "client.GithubOrgClient._public_repos_url",
+        new_callable=PropertyMock
+    )
     def test_public_repos(self, mock_url, mock_get):
         """Test public_repos"""
         mock_get.return_value = [
@@ -55,10 +63,10 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class([{
-    "org_payload": fixtures.org_payload,
-    "repos_payload": fixtures.repos_payload,
-    "expected_repos": fixtures.expected_repos,
-    "expected_repos_with_license": fixtures.apache2_repos
+    "org_payload": org_payload,
+    "repos_payload": repos_payload,
+    "expected_repos": expected_repos,
+    "expected_repos_with_license": apache2_repos
 }])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests"""
