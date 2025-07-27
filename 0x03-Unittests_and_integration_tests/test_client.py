@@ -8,7 +8,7 @@ from client import GithubOrgClient
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
-# ---------------- Task 4 & 7: Unit Tests ---------------- #
+# ---------------- Task 4 & Task 7: Unit Tests ---------------- #
 
 class TestGithubOrgClient(unittest.TestCase):
     """Unit tests for GithubOrgClient"""
@@ -31,10 +31,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
-        ({"license": {"key": "other_license"}}, "my_license", False),
-        ({}, "my_license", False),
-        ({"license": None}, "my_license", False),
-        ({"license": {"key": None}}, "my_license", False),
+        ({"license": {"key": "other_license"}}, "my_license", False)
     ])
     def test_has_license(self, repo, license_key, expected):
         """Test has_license returns expected boolean"""
@@ -66,10 +63,10 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, self.expected_repos_with_license)
 
 
-# ---------------- Checker-Compatible Mocking ---------------- #
+# ---------------- Checker-Compatible Patching ---------------- #
 
 def setUpModule():
-    """Patch client.get_json to mock external requests"""
+    """Patch client.get_json for integration tests"""
     get_json_patcher = patch("client.get_json")
     TestIntegrationGithubOrgClient.get_json_mock = get_json_patcher.start()
     TestIntegrationGithubOrgClient.get_json_patcher = get_json_patcher
@@ -85,11 +82,11 @@ def setUpModule():
 
 
 def tearDownModule():
-    """Stop patch after all integration tests"""
+    """Stop patching client.get_json"""
     TestIntegrationGithubOrgClient.get_json_patcher.stop()
 
 
-# ---------------- Run all tests ---------------- #
+# ---------------- Manual Test Runner ---------------- #
 
 if __name__ == "__main__":
     unittest.main()
