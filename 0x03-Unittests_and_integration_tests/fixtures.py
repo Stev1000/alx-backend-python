@@ -2,7 +2,11 @@
 """Fixtures for integration tests"""
 
 org_payload = {
-    "repos_url": "https://api.github.com/orgs/google/repos"
+    "login": "google",
+    "id": 1342004,
+    "url": "https://api.github.com/orgs/google",
+    "repos_url": "https://api.github.com/orgs/google/repos",
+    "description": "Google organization"
 }
 
 repos_payload = [
