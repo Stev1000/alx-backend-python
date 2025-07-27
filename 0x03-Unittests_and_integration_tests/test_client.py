@@ -8,7 +8,7 @@ from client import GithubOrgClient
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
-# ----------- Task 4: Unit Test for .org using patch + parameterized -----------
+# ---------------- Task 4: Unit Tests ---------------- #
 
 class TestGithubOrgClient(unittest.TestCase):
     """Unit tests for GithubOrgClient"""
@@ -19,18 +19,18 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch("client.get_json")
     def test_org(self, org_name, mock_get_json):
-        """Test that .org returns correct value and calls get_json once"""
+        """Test .org returns correct value and calls get_json once"""
         expected_url = f"https://api.github.com/orgs/{org_name}"
         mock_get_json.return_value = {"mocked": "data"}
 
         client = GithubOrgClient(org_name)
-        result = client.org  # Accessing @property
+        result = client.org  # correct @property access
 
         self.assertEqual(result, {"mocked": "data"})
         mock_get_json.assert_called_once_with(expected_url)
 
 
-# ----------- Task 9: Integration Test for public_repos -----------
+# ---------------- Task 9: Integration Tests ---------------- #
 
 @parameterized_class([{
     "org_payload": org_payload,
@@ -42,20 +42,31 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for GithubOrgClient.public_repos"""
 
     def test_public_repos(self):
-        """Test public_repos returns all repo names"""
+        """Test public_repos returns expected list"""
         client = GithubOrgClient("google")
-        self.assertEqual(client.public_repos(), self.expected_repos)
+        try:
+            result = client.public_repos()
+            print("🔍 Got:", result)
+            print("✅ Expected:", self.expected_repos)
+            self.assertEqual(result, self.expected_repos)
+        except Exception as e:
+            print("❌ ERROR in test_public_repos:", e)
+            raise
 
     def test_public_repos_with_license(self):
-        """Test public_repos filters repos by license"""
+        """Test public_repos filtered by license"""
         client = GithubOrgClient("google")
-        self.assertEqual(
-            client.public_repos("apache-2.0"),
-            self.expected_repos_with_license
-        )
+        try:
+            result = client.public_repos("apache-2.0")
+            print("🔍 Got (licensed):", result)
+            print("✅ Expected (licensed):", self.expected_repos_with_license)
+            self.assertEqual(result, self.expected_repos_with_license)
+        except Exception as e:
+            print("❌ ERROR in test_public_repos_with_license:", e)
+            raise
 
 
-# ----------- Patch requests.get at module level for integration test -----------
+# ---------------- requests.get Patch for Integration Tests ---------------- #
 
 def setUpModule():
     """Patch requests.get before integration tests"""
@@ -63,7 +74,7 @@ def setUpModule():
     TestIntegrationGithubOrgClient.get_patcher = get_patcher
     TestIntegrationGithubOrgClient.mock_get = get_patcher.start()
 
-    # Mock responses
+    # Mocks
     mock_org_response = Mock()
     mock_org_response.json.return_value = org_payload
 
@@ -85,7 +96,7 @@ def tearDownModule():
     TestIntegrationGithubOrgClient.get_patcher.stop()
 
 
-# ----------- Manual test runner -----------
+# ---------------- Manual runner ---------------- #
 
 if __name__ == "__main__":
     unittest.main()
