@@ -9,7 +9,7 @@ from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """Unit tests for GithubOrgClient"""
+    """Unit tests"""
 
     @parameterized.expand([
         ("google",),
@@ -38,20 +38,20 @@ class TestGithubOrgClient(unittest.TestCase):
         )
 
     @patch("client.get_json")
-    def test_public_repos(self, mock_get):
+    @patch("client.GithubOrgClient._public_repos_url", new_callable=PropertyMock)
+    def test_public_repos(self, mock_url, mock_get):
         """Test public_repos"""
         mock_get.return_value = [
             {"name": "repo1", "license": {"key": "apache-2.0"}},
             {"name": "repo2", "license": {"key": "bsd-3-clause"}}
         ]
-        with patch("client.GithubOrgClient._public_repos_url",
-                   new_callable=PropertyMock) as mock_url:
-            mock_url.return_value = "http://fake.url"
-            client = GithubOrgClient("test_org")
-            result = client.public_repos()
-            self.assertEqual(result, ["repo1", "repo2"])
-            mock_url.assert_called_once()
-            mock_get.assert_called_once_with("http://fake.url")
+        mock_url.return_value = "http://fake.url"
+        client = GithubOrgClient("test_org")
+        result = client.public_repos()
+
+        self.assertEqual(result, ["repo1", "repo2"])
+        mock_url.assert_called_once()
+        mock_get.assert_called_once_with("http://fake.url")
 
 
 @parameterized_class([{
@@ -65,7 +65,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Start patch"""
+        """Set up mocks"""
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
@@ -86,7 +86,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Stop patch"""
+        """Stop mocks"""
         cls.get_patcher.stop()
 
     def test_public_repos(self):
