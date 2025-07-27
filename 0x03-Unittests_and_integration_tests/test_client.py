@@ -45,34 +45,6 @@ class TestGithubOrgClient(unittest.TestCase):
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for GithubOrgClient.public_repos"""
 
-    @classmethod
-    def setUpClass(cls):
-        """Patch requests.get before all tests"""
-        cls.get_patcher = patch("requests.get")
-        cls.mock_get = cls.get_patcher.start()
-
-        # Mocked org response
-        mock_org_response = Mock()
-        mock_org_response.json.return_value = cls.org_payload
-
-        # Mocked repos response
-        mock_repos_response = Mock()
-        mock_repos_response.json.return_value = cls.repos_payload
-
-        def side_effect(url):
-            if url == f"https://api.github.com/orgs/google":
-                return mock_org_response
-            elif url == cls.org_payload["repos_url"]:
-                return mock_repos_response
-            raise ValueError(f"Unhandled URL: {url}")
-
-        cls.mock_get.side_effect = side_effect
-
-    @classmethod
-    def tearDownClass(cls):
-        """Stop patch after tests"""
-        cls.get_patcher.stop()
-
     def test_public_repos(self):
         """Test that public_repos returns expected list"""
         client = GithubOrgClient("google")
@@ -85,3 +57,41 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             client.public_repos("apache-2.0"),
             self.expected_repos_with_license
         )
+
+# --------------------------------------
+# ✅ Compatibility fix: module-level setup
+# --------------------------------------
+
+def setUpModule():
+    """Patch requests.get globally for integration test"""
+    get_patcher = patch("requests.get")
+    TestIntegrationGithubOrgClient.get_patcher = get_patcher
+    TestIntegrationGithubOrgClient.mock_get = get_patcher.start()
+
+    # Mock responses
+    mock_org_response = Mock()
+    mock_org_response.json.return_value = org_payload
+
+    mock_repos_response = Mock()
+    mock_repos_response.json.return_value = repos_payload
+
+    def side_effect(url):
+        if url == f"https://api.github.com/orgs/google":
+            return mock_org_response
+        elif url == org_payload["repos_url"]:
+            return mock_repos_response
+        raise ValueError(f"Unhandled URL: {url}")
+
+    TestIntegrationGithubOrgClient.mock_get.side_effect = side_effect
+
+
+def tearDownModule():
+    """Unpatch requests.get after integration test"""
+    TestIntegrationGithubOrgClient.get_patcher.stop()
+
+# --------------------------------------
+# ✅ Run tests manually if needed
+# --------------------------------------
+
+if __name__ == "__main__":
+    unittest.main()
