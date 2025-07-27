@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Tests for GithubOrgClient"""
 
-import sys
-import os
-sys.path.append(os.path.dirname(__file__)) 
 import unittest
 from unittest.mock import patch, Mock, PropertyMock
 from parameterized import parameterized, parameterized_class
