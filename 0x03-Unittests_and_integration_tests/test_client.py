@@ -61,8 +61,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
         client = GithubOrgClient("test_org")
         result = client.public_repos()
-
         expected = ["repo1", "repo2"]
+
         self.assertEqual(result, expected)
         mock_url.assert_called_once()
         mock_get_json.assert_called_once_with(
@@ -81,7 +81,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Set up mocks"""
+        """Start mock"""
         cls.get_patcher = patch("requests.get")
         cls.mock_get = cls.get_patcher.start()
 
@@ -102,16 +102,16 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Stop mocks"""
+        """Stop mock"""
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test all repos"""
+        """Test repos"""
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
-        """Test licensed repos"""
+        """Test by license"""
         client = GithubOrgClient("google")
         self.assertEqual(
             client.public_repos("apache-2.0"),
