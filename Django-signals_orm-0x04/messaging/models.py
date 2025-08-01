@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from .managers import UnreadMessagesManager
 
 User = get_user_model()
 
@@ -50,4 +51,6 @@ class MessageHistory(models.Model):
 
     def __str__(self):
         return f"Edit history for Message ID {self.message.id} at {self.edited_at}"
-
+    
+    objects = models.Manager()  # default
+    unread = UnreadMessagesManager()  # custom
