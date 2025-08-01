@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
-from .views import UnreadMessagesViewSet
+from messaging.views import UnreadMessagesViewSet, MessageViewSet
 
 
 router = DefaultRouter()
 router.register(r'unread-messages', UnreadMessagesViewSet, basename='unread-messages')
+router.register(r'messages', MessageViewSet, basename='messages')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -9,6 +9,8 @@ from django.db.models import Prefetch
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import MessageSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 User = get_user_model()
 
@@ -53,3 +55,11 @@ class UnreadMessagesViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return Message.unread.unread_for_user(self.request.user).only('id', 'sender', 'content', 'timestamp')
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+
+    @method_decorator(cache_page(60))  # ✅ Cache this view for 60 seconds
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
