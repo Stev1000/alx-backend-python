@@ -21,6 +21,7 @@ def account_deleted(request):
 
 @login_required
 def threaded_conversations(request):
+    sent_by_user = Message.objects.filter(sender=request.user).select_related('receiver')
     messages = Message.objects.filter(receiver=request.user, parent_message__isnull=True)\
         .select_related('sender', 'receiver')\
         .prefetch_related(
