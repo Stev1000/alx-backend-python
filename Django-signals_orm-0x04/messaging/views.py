@@ -6,6 +6,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Message
 from django.db.models import Prefetch
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .serializers import MessageSerializer
 
 User = get_user_model()
 
@@ -43,3 +46,10 @@ def get_replies_recursive(message):
             'replies': get_replies_recursive(reply)
         })
     return replies_data
+
+class UnreadMessagesViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Message.unread.for_user(self.request.user)
