@@ -32,4 +32,7 @@ EXPOSE 8000
 
 # Prod (recommended if you have wsgi set up):
 # Replace "messaging_app" with your Django project name (the one with settings.py)
-CMD ["gunicorn", "messaging_app.wsgi:application", "--bind", "0.0.0.0:8000"]
+EXPOSE 8000
+
+CMD ["gunicorn", "messaging_app.wsgi:application", "-b", "0.0.0.0:8000"]
+
