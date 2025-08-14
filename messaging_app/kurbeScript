@@ -148,7 +148,7 @@ show_dashboard_info() {
     print_status "Additional Information:"
     echo "======================"
     echo "Minikube version: $(minikube version --short)"
-    echo "Kubectl version: $(kubectl version --client --short)"
+    echo "Kubectl version: $(kubectl version --client -o yaml | grep gitVersion | head -1 | awk '{print $2}')"
     echo ""
     print_status "WSL-specific notes:"
     echo "- Make sure Docker service is running: sudo service docker start"
