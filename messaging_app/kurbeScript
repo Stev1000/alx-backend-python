@@ -1,182 +1,37 @@
 #!/bin/bash
 
 # kurbeScript - Kubernetes Cluster Setup and Verification
-# This script starts a local Kubernetes cluster using minikube and verifies its status
 
-set -e  # Exit on any error
+# Check if minikube is installed
+if ! command -v minikube &> /dev/null; then
+    echo "minikube is not installed"
+    exit 1
+fi
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Check if kubectl is installed  
+if ! command -v kubectl &> /dev/null; then
+    echo "kubectl is not installed"
+    exit 1
+fi
 
-# Function to print colored output
-print_status() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
+# Start Docker if needed (for WSL)
+if ! docker ps &>/dev/null; then
+    sudo service docker start
+    sleep 3
+fi
 
-print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
+# Start minikube cluster
+if ! minikube status &>/dev/null; then
+    minikube start --driver=docker
+fi
 
-print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
+# Wait for cluster to be ready
+kubectl wait --for=condition=Ready nodes --all --timeout=300s
 
-print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
-
-# Function to check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
-
-# Check prerequisites
-check_prerequisites() {
-    print_status "Checking prerequisites..."
-    
-    if ! command_exists minikube; then
-        print_error "minikube is not installed. Please install minikube first."
-        echo "Visit: https://minikube.sigs.k8s.io/docs/start/"
-        exit 1
-    fi
-    
-    if ! command_exists kubectl; then
-        print_error "kubectl is not installed. Please install kubectl first."
-        echo "Visit: https://kubernetes.io/docs/tasks/tools/"
-        exit 1
-    fi
-    
-    print_success "Prerequisites check passed"
-}
-
-# Start Kubernetes cluster
-start_cluster() {
-    print_status "Starting Kubernetes cluster with minikube..."
-    
-    # Check if Docker is running (important for WSL)
-    if ! docker ps >/dev/null 2>&1; then
-        print_error "Docker is not running. Starting Docker service..."
-        sudo service docker start
-        sleep 5
-        
-        if ! docker ps >/dev/null 2>&1; then
-            print_error "Failed to start Docker. Please run 'sudo service docker start' manually."
-            exit 1
-        fi
-    fi
-    
-    # Check if minikube is already running
-    if minikube status >/dev/null 2>&1; then
-        print_warning "Minikube cluster is already running"
-        minikube status
-    else
-        print_status "Starting new minikube cluster..."
-        # WSL-specific settings for better performance
-        minikube start --driver=docker --cpus=2 --memory=2048 --disk-size=20g
-        
-        if [ $? -eq 0 ]; then
-            print_success "Minikube cluster started successfully"
-        else
-            print_error "Failed to start minikube cluster"
-            print_status "Trying with different settings for WSL..."
-            minikube start --driver=docker --cpus=1 --memory=1024
-            
-            if [ $? -eq 0 ]; then
-                print_success "Minikube cluster started with reduced resources"
-            else
-                print_error "Failed to start minikube cluster even with reduced resources"
-                exit 1
-            fi
-        fi
-    fi
-}
-
-# Verify cluster is running
-verify_cluster() {
-    print_status "Verifying cluster status..."
-    
-    # Wait for cluster to be ready
-    print_status "Waiting for cluster to be ready..."
-    kubectl wait --for=condition=Ready nodes --all --timeout=300s
-    
-    if [ $? -eq 0 ]; then
-        print_success "Cluster is ready"
-    else
-        print_error "Cluster failed to become ready within timeout"
-        exit 1
-    fi
-    
-    # Display cluster info
-    echo ""
-    print_status "Cluster Information:"
-    echo "===================="
-    kubectl cluster-info
-    
-    echo ""
-    print_status "Node Status:"
-    echo "============"
-    kubectl get nodes -o wide
-}
+# Verify cluster is running using kubectl cluster-info
+kubectl cluster-info
 
 # Retrieve available pods
-get_pods() {
-    echo ""
-    print_status "Retrieving available pods..."
-    echo "============================"
-    
-    # Get pods from all namespaces
-    kubectl get pods --all-namespaces
-    
-    echo ""
-    print_status "Pods in default namespace:"
-    echo "=========================="
-    kubectl get pods
-    
-    if [ $(kubectl get pods --no-headers | wc -l) -eq 0 ]; then
-        print_warning "No pods found in default namespace"
-        print_status "This is normal for a fresh cluster"
-    fi
-}
+kubectl get pods --all-namespaces
 
-# Display cluster dashboard info
-show_dashboard_info() {
-    echo ""
-    print_status "Additional Information:"
-    echo "======================"
-    echo "Minikube version: $(minikube version --short)"
-    echo "Kubectl version: $(kubectl version --client -o yaml | grep gitVersion | head -1 | awk '{print $2}')"
-    echo ""
-    print_status "WSL-specific notes:"
-    echo "- Make sure Docker service is running: sudo service docker start"
-    echo "- Dashboard access: minikube dashboard --url (then copy URL to Windows browser)"
-    echo ""
-    print_status "Useful commands:"
-    echo "- Stop cluster: minikube stop"
-    echo "- Delete cluster: minikube delete"
-    echo "- Check Docker status: docker ps"
-    echo "- Start Docker: sudo service docker start"
-}
-
-# Main execution
-main() {
-    echo "================================"
-    echo "  Kubernetes Cluster Setup"
-    echo "================================"
-    echo ""
-    
-    check_prerequisites
-    start_cluster
-    verify_cluster
-    get_pods
-    show_dashboard_info
-    
-    echo ""
-    print_success "Kubernetes cluster setup completed successfully!"
-}
-
-# Run main function
-main "$@"
+echo "Kubernetes cluster setup completed"
