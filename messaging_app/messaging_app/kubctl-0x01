@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Scale the Django app to 3 replicas
+kubectl scale deployment messaging-app --replicas=3
+
+# Wait a few seconds for scaling to take effect
+sleep 5
+
+# Verify that multiple pods are running
+kubectl get pods -l app=messaging-app
+
+# Perform load testing on your app using wrk (assuming wrk is installed and service is exposed locally)
+# Adjust URL if your app is not running on localhost:8000
+echo "Running wrk load test..."
+wrk -t2 -c50 -d10s http://localhost:8000/ || echo "wrk test skipped (wrk not installed or service not exposed)"
+
+# Monitor resource usage
+kubectl top pods || echo "kubectl top skipped (metrics-server may not be installed)"
