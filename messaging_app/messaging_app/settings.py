@@ -26,10 +26,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-change-me")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"
-
+DEBUG = os.getenv("DJANGO_DEBUG", str(DEBUG)).lower() in ("1", "true", "yes")
 # Hosts allowed to connect to this Django instance
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",") if os.environ.get("ALLOWED_HOSTS") else []
-
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", ",".join(ALLOWED_HOSTS)).split(",")
 
 # Application definition
 
@@ -152,7 +152,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = os.getenv("DJANGO_STATIC_ROOT", "/app/staticfiles")
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
