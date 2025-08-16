@@ -158,3 +158,5 @@ STATIC_ROOT = os.getenv("DJANGO_STATIC_ROOT", "/app/staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'chats.User'
+'HOST': 'db',
+'PORT': '3306',
