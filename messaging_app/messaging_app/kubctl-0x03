@@ -1,0 +1,25 @@
+#!/bin/bash
+# Script to perform rolling update for messaging-app
+
+set -e
+
+echo "📦 Applying Blue Deployment update..."
+kubectl apply -f blue_deployment.yaml
+
+echo "⏳ Monitoring rollout status..."
+kubectl rollout status deployment/messaging-app
+
+echo "🌍 Testing for downtime..."
+for i in {1..20}
+do
+  curl -s http://localhost:8000/ > /dev/null
+  if [ $? -ne 0 ]; then
+    echo "❌ Request failed at attempt $i — downtime detected!"
+  else
+    echo "✅ Request succeeded at attempt $i"
+  fi
+  sleep 2
+done
+
+echo "🔎 Verifying running pods..."
+kubectl get pods -o wide
