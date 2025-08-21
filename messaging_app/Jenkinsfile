@@ -146,3 +146,26 @@ EOF
         }
     }
 }
+stage('Checkout') {
+    steps {
+        echo 'Pulling source code from GitHub...'
+        git branch: 'master',
+            credentialsId: 'your-github-credentials-id',
+            url: 'https://github.com/Stev1000/alx-backend-python.git'
+    }
+}
+stage('Install Dependencies') {
+    steps {
+        dir('messaging_app') {
+            echo 'Installing project dependencies from requirements.txt using pip3...'
+            sh '''
+                pip3 install --upgrade pip
+                if [ -f requirements.txt ]; then
+                    pip3 install -r requirements.txt
+                else
+                    echo "No requirements.txt found"
+                fi
+            '''
+        }
+    }
+}
