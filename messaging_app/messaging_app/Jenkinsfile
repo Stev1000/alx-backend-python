@@ -169,3 +169,23 @@ stage('Install Dependencies') {
         }
     }
 }
+stage('Build and Push Docker Image') {
+    steps {
+        dir('messaging_app') {
+            script {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "Logging in to DockerHub..."
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        
+                        echo "Building Docker image..."
+                        docker build -t stevo1234/messaging_app:latest .
+                        
+                        echo "Pushing Docker image to DockerHub..."
+                        docker push stevo1234/messaging_app:latest
+                    '''
+                }
+            }
+        }
+    }
+}
