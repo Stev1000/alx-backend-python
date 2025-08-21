@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import pymysql
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +37,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", ",".join(ALLOWED_HOSTS)).split
 
 # Application definition
 
+pymysql.install_as_MySQLdb()
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -102,7 +107,6 @@ WSGI_APPLICATION = 'messaging_app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -158,5 +162,4 @@ STATIC_ROOT = os.getenv("DJANGO_STATIC_ROOT", "/app/staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'chats.User'
-'HOST': 'db',
-'PORT': '3306',
+
